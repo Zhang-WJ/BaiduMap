@@ -51,6 +51,23 @@
 				}
 
 				map.addEventListener('click', placeMarker)
+
+				function placeCrimes(crimes){
+					for (var i = 0; i < crimes.length; i++) {
+						var point = new BMap.Point(crimes[i].latitude,crimes[i].longitude);
+						crime = new BMap.Marker(point);
+						map.addOverlay(crime); 
+						var opts = {
+							 width : 200,     // 信息窗口宽度
+							 height: 100,     // 信息窗口高度
+							 title : crimes[i].date + "\n" + crimes[i].category + "\n" + crimes[i].desc
+						}
+						var infoWindow = new BMap.InfoWindow(crimes[i].category, opts);  // 创建信息窗口对象        
+						map.openInfoWindow(infoWindow,point); //开启信息窗口
+
+					}
+				}
+				placeCrimes( {{ data | safe }} )
 			}
 			
 		</script>  

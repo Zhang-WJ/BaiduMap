@@ -1,4 +1,6 @@
 import pymysql
+import datetime
+
 import dbconfig
 
 class DBHelper:
@@ -22,10 +24,10 @@ class DBHelper:
 	def add_input(self, data):
 		connection = self.connect()
 		try:
-			query = "INSERT INTO crimes (description) VALUES('{}')".format(data)
+			query = "INSERT INTO crimes (description) VALUES (%s)"
 			with connection.cursor() as cursor:
-				cursor.execute(query)
-				cursor.commit()
+				cursor.execute(query, data)
+				connection.commit()
 		finally:
 			connection.close()
 
@@ -35,6 +37,33 @@ class DBHelper:
 			query = 'DELETE FROM crimes;'
 			with connection.cursor() as cursor:
 				cursor.execute(query)
-				cursor.commit()
+				connection.commit()
+		finally:
+			connection.close()
+
+	def add_crime(self, category, date, latitude, longitude, description):
+		connection = self.connect()
+		try:
+			query = "INSERT INTO crimes (category, data, latitude, longitude, description) VALUES (%s, %s, %s, %s, %s)"
+			with connection.cursor() as cursor:
+				cursor.execute(query, (category, date, latitude, longitude,description))
+				connection.commit()
+		except Exception as e:
+			print(e)
+		finally:
+			connection.close()
+
+	def get_all_crimes(self):
+		connection = self.connect()
+		try:
+			query = "SELECT latitude, longitude, data, category, description FROM crimes;"
+			with connection.cursor() as cursor:
+				cursor.execute(query)
+				named_crimes = [{'latitude':crime[0],
+				'longitude':crime[1],
+				'date':datetime.datetime.strftime(crime[2],'%Y-%d-%m'),
+				'category': crime[3],
+				'desc':crime[4]} for crime in cursor]
+				return named_crimes
 		finally:
 			connection.close()
