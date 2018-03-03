@@ -14,11 +14,15 @@
 		<div id="container" style="width:70%;height: 500px"></div>
 		<div id="newcrimeform">
 			<h2>Submit new crime</h2>
+			{% if error_message %}
+				<div id="error"><p>{{ error_message }}</p></div>
+			{% endif %}
 			<form action="/submitcrime" method="POST">
 				<label for="category">Category</label>
 				<select name="category" id="category">
-					<option value="mugging">Mugging</option>
-					<option value="breakin">Breakin</option>
+					{% for category in categories %}
+						<option value="{{ category }}">{{ category }}</option>
+					{% endfor %}
 				</select>
 				<label for="date">Date</label>
 				<input type="date" name="date" id="date">
@@ -70,6 +74,6 @@
 				placeCrimes( {{ data | safe }} )
 			}
 			
-		</script>  
+		</script>
 	</body>  
 </html>
