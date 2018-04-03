@@ -3,9 +3,9 @@
 	<head>  
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />  
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-		<title>Hello, World</title>  
+		<title>Mark yourmap in Map</title>
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=eQy99jtP5Ir4GvhZmhL190AdPAXBnnt4">
-		//v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"
+		<!--//v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"-->
 		</script>
 		<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
 	</head>  
@@ -17,7 +17,7 @@
 			{% if error_message %}
 				<div id="error"><p>{{ error_message }}</p></div>
 			{% endif %}
-			<form action="/submitcrime" method="POST">
+			<form action="/submitplace" method="POST">
 				<label for="category">Category</label>
 				<select name="category" id="category">
 					{% for category in categories %}

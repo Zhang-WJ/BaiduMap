@@ -12,7 +12,7 @@ from dbhelper import DBHelper
 app = Flask(__name__)
 DB = DBHelper()
 
-categories = ['mugging', 'break-in']
+categories = ['like', 'has gone']
 
 def format_date(userdate):
 	date = dateparser.parse(userdate)
@@ -38,24 +38,8 @@ def home(error_message=None):
 						 	categories=categories,
 						 	error_message=error_message)
 
-# @app.route('/add', methods=['POST'])
-# def add():
-# 	try:
-# 		data = request.form.get('userinput')
-# 		DB.add_input(data)
-# 	except Exception as e:
-# 		print(e)
-# 	return home()
 
-# @app.route('/clear')
-# def clear():
-# 	try:
-# 		DB.clear_all()
-# 	except Exception as e:
-# 		print(e)
-# 	return home()
-
-@app.route('/submitcrime', methods=['POST'])
+@app.route('/submitplace', methods=['POST'])
 def submitcrime():
 	category = request.form.get("category")
 	if category not in categories:
@@ -70,9 +54,7 @@ def submitcrime():
 		longitude = float(request.form.get("longitude"))
 	except ValueError:
 		return home()
-	# description = request.form.get("description")
 	description = sanitize_string(request.form.get("description"))
-	print(description)
 	DB.add_crime(category, date, latitude, longitude, description)
 	return home()
 
